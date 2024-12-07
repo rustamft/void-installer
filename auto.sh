@@ -1,32 +1,29 @@
-# Print block devices
 lsblk
-# Request disk name
 disk=""
 while [ -z $disk ] -o [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name: " input
   disk=input
 done
-# Partition disk
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk /dev/$disk
-  o # clear the in memory partition table
-  n # new partition
-  p # primary partition
-  1 # partition number 1
-    # default - start at beginning of disk 
-  +500M # 500 MB EFI parttion
-  n # new partition
-  p # primary partition
-  2 # partion number 2
-    # default, start immediately after preceding partition
-  +500M # 500 MB boot parttion
-  n # new partition
-  p # primary partition
-  3 # partion number 3
-    # default, start immediately after preceding partition
-    # default, extend partition to end of disk
-  p # print the in-memory partition table
-  w # write the partition table
-  q # and we're done
+fdisk /dev/$disk << EOF
+o # clear the in memory partition table
+n # new partition
+p # primary partition
+1 # partition number 1
+# default - start at beginning of disk 
++500M # 500 MB EFI parttion
+n # new partition
+p # primary partition
+2 # partion number 2
+# default, start immediately after preceding partition
++500M # 500 MB boot parttion
+n # new partition
+p # primary partition
+3 # partion number 3
+# default, start immediately after preceding partition
+# default, extend partition to end of disk
+p # print the in-memory partition table
+w # write the partition table
+q # and we're done
 EOF
 mkfs.vfat /dev/$disk1
 mkfs.ext2 /dev/$disk2
