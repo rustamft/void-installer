@@ -1,8 +1,6 @@
-lsblk
-disk=""
+echo "$(lsblk)"
 while [ -z $disk ] -o [ ! -e /dev/$disk ]; do
-  read -p "Enter a valid disk name: " input
-  disk=input
+  read -p "Enter a valid disk name: " disk
 done
 fdisk /dev/$disk << EOF
 o # clear the in memory partition table
