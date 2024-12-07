@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "$(lsblk)"
 while [ -z $disk ] -o [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name: " disk
