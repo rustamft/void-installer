@@ -5,7 +5,7 @@ while [ -z $disk ] -o [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name: " disk
 done
 fdisk /dev/$disk << EOF
-o # clear the in memory partition table
+g # create a new GTP partition table
 n # new partition
 p # primary partition
 1 # partition number 1
