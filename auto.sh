@@ -1,26 +1,27 @@
 #!/bin/bash
 
 echo "$(lsblk)"
-while [ -z $disk ] -o [ ! -e /dev/$disk ]; do
+while [ -z $disk ] || [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name: " disk
 done
+# Empty lines in EOF section is default values
 fdisk /dev/$disk << EOF
 g # create a new GTP partition table
 n # new partition
 p # primary partition
 1 # partition number 1
-# default - start at beginning of disk 
+
 +500M # 500 MB EFI parttion
 n # new partition
 p # primary partition
 2 # partion number 2
-# default, start immediately after preceding partition
+
 +500M # 500 MB boot parttion
 n # new partition
 p # primary partition
 3 # partion number 3
-# default, start immediately after preceding partition
-# default, extend partition to end of disk
+
+
 p # print the in-memory partition table
 w # write the partition table
 q # and we're done
