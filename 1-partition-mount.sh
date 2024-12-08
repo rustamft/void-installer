@@ -27,9 +27,9 @@ cryptsetup luksOpen /dev/${disk}3 cryptroot
 mkfs.vfat /dev/${disk}1
 mkfs.ext2 /dev/${disk}2
 mkfs.f2fs /dev/mapper/cryptroot
-mount /dev/mapper/cryptroot /mnt
-mkdir -p /mnt/boot/efi
-mount /dev/${disk}2 /mnt/boot
-mount /dev/${disk}1 /mnt/boot/efi
+mkdir -p /mnt/target/boot/efi
+mount /dev/mapper/cryptroot /mnt/target
+mount /dev/${disk}2 /mnt/target/boot
+mount /dev/${disk}1 /mnt/target/boot/efi
 echo "Disk has been partitioned and mounted:"
 echo "$(lsblk)"
