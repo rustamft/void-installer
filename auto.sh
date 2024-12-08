@@ -31,6 +31,7 @@ cryptsetup luksOpen /dev/${disk}3
 cryptsetup luksFormat /dev/mapper/cryptroot
 void-installer
 mount /dev/mapper/cryptroot /mnt
+mkdir -p /mnt/boot/efi
 mount /dev/${disk}2 /mnt/boot
 mount /dev/${disk}1 /mnt/boot/efi
 xchroot /mnt
