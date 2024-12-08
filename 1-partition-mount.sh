@@ -23,7 +23,7 @@ w
 q
 EOF
 cryptsetup luksFormat /dev/${disk}3
-cryptsetup luksOpen /dev/${disk}3
+cryptsetup luksOpen /dev/${disk}3 cryptroot
 mkfs.vfat /dev/${disk}1
 mkfs.ext2 /dev/${disk}2
 mkfs.f2fs /dev/mapper/cryptroot
