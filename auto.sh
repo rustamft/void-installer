@@ -7,17 +7,14 @@ done
 fdisk /dev/$disk << EOF
 g
 n
-p
 1
 
 +500M
 n
-p
 2
 
 +500M
 n
-p
 3
 
 
