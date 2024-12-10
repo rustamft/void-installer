@@ -2,7 +2,10 @@
 
 echo "$(lsblk)"
 while [ -z $disk ] || [ ! -e /dev/$disk ]; do
-  read -p "Enter a valid disk name: " disk
+  read -p "Enter a valid disk name (e.g. sda): " disk
+done
+while [ -z $password ]; do
+  read -p "Enter a password for the ${disk}3 partition encryption: " password
 done
 fdisk /dev/$disk << EOF
 g
@@ -18,11 +21,15 @@ n
 3
 
 
-p
 w
 q
 EOF
-cryptsetup luksFormat /dev/${disk}3
-cryptsetup luksOpen /dev/${disk}3 cryptroot
+cryptsetup luksFormat /dev/${disk}3 << EOF
+YES
+$password
+EOF
+cryptsetup luksOpen /dev/${disk}3 cryptroot << EOF
+$password
+EOF
 echo "Disk has been partitioned:"
 echo "$(lsblk)"
