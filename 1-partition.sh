@@ -24,12 +24,7 @@ n
 w
 q
 EOF
-cryptsetup luksFormat /dev/${disk}3 << EOF
-YES
-$password
-EOF
-cryptsetup luksOpen /dev/${disk}3 cryptroot << EOF
-$password
-EOF
+echo $password | cryptsetup luksFormat /dev/${disk}3 -
+echo $password | cryptsetup luksOpen /dev/${disk}3 cryptroot -
 echo "Disk has been partitioned:"
 echo "$(lsblk)"
