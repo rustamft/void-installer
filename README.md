@@ -2,7 +2,7 @@ This is used to automate installation of Void Linux.
 
 The chosen disk is divided in 3 partitions:
 1) efi - 500 Mb - unencrypted
-2) boot - 500 Mb - unencrypted
+2) boot - 1000 Mb - unencrypted
 3) root - the rest of the disk - encrypted using LUKS without LVM
 
 Commands order:
