@@ -8,6 +8,7 @@ mount /dev/mapper/cryptroot /mnt
 mount /dev/${disk}2 /mnt/boot
 mount /dev/${disk}1 /mnt/boot/efi
 xchroot /mnt /bin/bash << EOF
+xbps-install -Sy cryptsetup
 uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
 appendix="rd.auto=1 rd.luks.name=\${uuid}=cryptroot rd.luks.allow-discards"
 sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& \${appendix}/" /etc/default/grub
