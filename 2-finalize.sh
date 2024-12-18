@@ -47,6 +47,8 @@ case $desktop_environment in
     ln -s /etc/sv/gdm /var/service
     ;;
   "KDE")
+    xbps-install -S sddm plasma-desktop xorg-minimal xdg-user-dirs pcmanfm-qt alacritty flatpak
+    ln -s /etc/sv/sddm /var/service
     ;;
   *)
     ;;
