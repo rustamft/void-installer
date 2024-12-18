@@ -2,7 +2,7 @@
 
 echo "$(lsblk)"
 while [ -z $disk ] || [ ! -e /dev/$disk ]; do
-  read -p "Enter a valid disk name: " disk
+  read -p "Enter a valid disk name (e.g. sda): " disk
 done
 mount /dev/mapper/cryptroot /mnt
 mount /dev/${disk}2 /mnt/boot
