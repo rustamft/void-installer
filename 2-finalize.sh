@@ -13,7 +13,7 @@ while [ -z $desktop_environment ]; do
     "2")
       desktop_environment="GNOME" ;;
     "3")
-      desktop_environment="KDE"; echo "KDE isn't yet supported"; exit 1 ;;
+      desktop_environment="KDE" ;;
     *)
       desktop_environment="" ;;
   esac
