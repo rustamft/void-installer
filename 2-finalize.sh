@@ -33,25 +33,29 @@ xbps-reconfigure -fa
 # Configure ZRAM
 echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 # Enable services if any DE is chosen
-if [ $desktop_environment != "none" ]; then
-  xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
-  # Enable general services
-  rm /var/services/dhcpd
-  ln -s /etc/sv/dbus /var/service
-  ln -s /etc/sv/NetworkManager /var/service
-  ln -s /etc/sv/bluetoothd /var/service
-  ln -s /etc/sv/tlp /var/service
-  # Enable PipeWire
-  mkdir -p /etc/pipewire/pipewire.conf.d
-  ln -s /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pipewire.conf.d/
-  mkdir -p ~/.config/autostart
-  ln -s /user/share/applications/pipewire.desktop ~/.config/autostart
-  # Enable backlight level persisting
-  mkdir /etc/sv/backlight
-  wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/finish -O /etc/sv/backlight/finish
-  wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/run -O /etc/sv/backlight/run
-  ln -s /etc/sv/backlight /var/service
-fi
+case $desktop_environment in
+  "GNOME"|"KDE)
+    xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
+    # Enable general services
+    rm /var/services/dhcpd
+    ln -s /etc/sv/dbus /var/service
+    ln -s /etc/sv/NetworkManager /var/service
+    ln -s /etc/sv/bluetoothd /var/service
+    ln -s /etc/sv/tlp /var/service
+    # Enable PipeWire
+    mkdir -p /etc/pipewire/pipewire.conf.d
+    ln -s /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pipewire.conf.d/
+    mkdir -p ~/.config/autostart
+    ln -s /user/share/applications/pipewire.desktop ~/.config/autostart
+    # Enable backlight level persisting
+    mkdir /etc/sv/backlight
+    wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/finish -O /etc/sv/backlight/finish
+    wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/run -O /etc/sv/backlight/run
+    ln -s /etc/sv/backlight /var/service
+    ;;
+  *)
+    ;;
+esac
 # Install the chosen DE
 case $desktop_environment in
   "GNOME")
