@@ -21,7 +21,7 @@ while [ -z $desktop_environment ]; do
       desktop_environment="" ;;
   esac
 done
-while [ $desktop_environment != "none" ] && ( [ -z $username ] || [ -z grep -q "^$username:" /mnt/etc/passwd ] ); do
+while [ $desktop_environment != "none" ] && ( [ -z $username ] || [ -z $(grep -c "^${username}:" /mnt/etc/passwd) ] ); do
   read -p "Enter your user name: " username
 done
 xchroot /mnt /bin/bash << EOF
