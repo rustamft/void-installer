@@ -64,7 +64,7 @@ case $desktop_environment in
 esac
 # Configure ZRAM
 xbps-install -Sy zramen
-echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
+echo 'zramen -a zstd -n 6 -s 50 -p 100 make' >> /etc/rc.local
 # Configure GRUB
 xbps-install -Sy cryptsetup
 uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
