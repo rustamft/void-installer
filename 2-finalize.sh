@@ -4,9 +4,6 @@ echo "$(lsblk)"
 while [ -z $disk ] || [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name (e.g. sda): " disk
 done
-while [ -z $username ] || ! id $username >/dev/null 2>&1; do
-  read -p "Enter your user name: " username
-done
 while [ -z $desktop_environment ]; do
   printf "Choose desktop environment to install:\n  1) none\n  2) GNOME\n  3) KDE\n"
   read desktop_environment
@@ -28,6 +25,9 @@ xchroot /mnt /bin/bash << EOF
 # Enable services if any DE is chosen
 case $desktop_environment in
   "GNOME"|"KDE)
+    while [ -z \$username ] || ! id \$username >/dev/null 2>&1; do
+      read -p "Enter your user name: " username
+    done
     xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
     # Enable general services
     rm /etc/runit/runsvdir/default/dhcpd
@@ -38,8 +38,8 @@ case $desktop_environment in
     # Enable PipeWire
     mkdir -p /etc/pipewire/pipewire.conf.d
     ln -s /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pipewire.conf.d/
-    mkdir -p /home/${username}/.config/autostart
-    ln -s /user/share/applications/pipewire.desktop /home/${username}/.config/autostart
+    mkdir -p /home/\${username}/.config/autostart
+    ln -s /user/share/applications/pipewire.desktop /home/\${username}/.config/autostart
     # Enable backlight level persisting
     mkdir /etc/sv/backlight
     wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/finish -O /etc/sv/backlight/finish
