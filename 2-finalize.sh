@@ -30,6 +30,7 @@ uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
 appendix="rd.auto=1 rd.luks.name=\${uuid}=cryptroot rd.luks.allow-discards"
 sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& \${appendix}/" /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --boot-directory=/boot
+xbps-reconfigure -fa
 xbps-install -Sy zramen
 echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 case $desktop_environment in
@@ -64,8 +65,8 @@ case $desktop_environment in
   *)
     ;;
 esac
-xbps-reconfigure -fa
 exit
 EOF
 umount -R /mnt
+cryptsetup luksClose /dev/mapper/cryptroot
 echo "Void Linux setup is completed!"
