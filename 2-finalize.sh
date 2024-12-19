@@ -36,7 +36,7 @@ echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 case $desktop_environment in
   "GNOME"|"KDE")
     xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
-    rm /etc/runit/runsvdir/default/dhcpd
+    rm /etc/runit/runsvdir/default/dhcpcd
     ln -s /etc/sv/dbus /etc/runit/runsvdir/default/
     ln -s /etc/sv/NetworkManager /etc/runit/runsvdir/default/
     ln -s /etc/sv/bluetoothd /etc/runit/runsvdir/default/
