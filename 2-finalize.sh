@@ -22,16 +22,6 @@ mount /dev/mapper/cryptroot /mnt
 mount /dev/${disk}2 /mnt/boot
 mount /dev/${disk}1 /mnt/boot/efi
 xchroot /mnt /bin/bash << EOF
-xbps-install -Sy cryptsetup zramen
-# Configure GRUB
-uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
-appendix="rd.auto=1 rd.luks.name=\${uuid}=cryptroot rd.luks.allow-discards"
-sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& \${appendix}/" /etc/default/grub
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --boot-directory=/boot
-grub-mkconfig -o /boot/grub/grub.cfg
-xbps-reconfigure -fa
-# Configure ZRAM
-echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 # Enable services if any DE is chosen
 case $desktop_environment in
   "GNOME"|"KDE)
@@ -69,6 +59,17 @@ case $desktop_environment in
   *)
     ;;
 esac
+# Configure GRUB
+xbps-install -Sy cryptsetup
+uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
+appendix="rd.auto=1 rd.luks.name=\${uuid}=cryptroot rd.luks.allow-discards"
+sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& \${appendix}/" /etc/default/grub
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --boot-directory=/boot
+grub-mkconfig -o /boot/grub/grub.cfg
+xbps-reconfigure -fa
+# Configure ZRAM
+xbps-install -Sy zramen
+echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 exit
 EOF
 umount -R /mnt
