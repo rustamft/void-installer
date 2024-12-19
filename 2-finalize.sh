@@ -25,6 +25,13 @@ while [ $desktop_environment != "none" ] && ( [ -z $username ] || [ -z $(grep "^
   read -p "Enter your user name: " username
 done
 xchroot /mnt /bin/bash << EOF
+xbps-install -Sy cryptsetup
+uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
+appendix="rd.auto=1 rd.luks.name=\${uuid}=cryptroot rd.luks.allow-discards"
+sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& \${appendix}/" /etc/default/grub
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --boot-directory=/boot
+xbps-install -Sy zramen
+echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 case $desktop_environment in
   "GNOME"|"KDE")
     xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
@@ -57,16 +64,8 @@ case $desktop_environment in
   *)
     ;;
 esac
-xbps-install -Sy zramen
-echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
-xbps-install -Sy cryptsetup
-uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
-appendix="rd.auto=1 rd.luks.name=\${uuid}=cryptroot rd.luks.allow-discards"
-sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& \${appendix}/" /etc/default/grub
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --boot-directory=/boot
-grub-mkconfig -o /boot/grub/grub.cfg
 xbps-reconfigure -fa
 exit
 EOF
 umount -R /mnt
-echo "Void Linux startup configured!"
+echo "Void Linux setup is completed!"
