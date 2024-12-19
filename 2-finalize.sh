@@ -22,32 +22,44 @@ mount /dev/mapper/cryptroot /mnt
 mount /dev/${disk}2 /mnt/boot
 mount /dev/${disk}1 /mnt/boot/efi
 xchroot /mnt /bin/bash << EOF
-xbps-install -Sy cryptsetup
+xbps-install -Sy cryptsetup zramen
+# Configure GRUB
 uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
 appendix="rd.auto=1 rd.luks.name=\${uuid}=cryptroot rd.luks.allow-discards"
 sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& \${appendix}/" /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --boot-directory=/boot
 grub-mkconfig -o /boot/grub/grub.cfg
 xbps-reconfigure -fa
+# Configure ZRAM
+echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
+# Enable services if any DE is chosen
 if [ $desktop_environment != "none" ]; then
-  xbps-install -S dbus NetworkManager bluez tlp pipewire elogind mesa-dri
+  xbps-install -S dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
+  # Enable general services
   rm /var/services/dhcpd
   ln -s /etc/sv/dbus /var/service
   ln -s /etc/sv/NetworkManager /var/service
   ln -s /etc/sv/bluetoothd /var/service
   ln -s /etc/sv/tlp /var/service
+  # Enable PipeWire
   mkdir -p /etc/pipewire/pipewire.conf.d
   ln -s /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pipewire.conf.d/
   mkdir -p ~/.config/autostart
   ln -s /user/share/applications/pipewire.desktop ~/.config/autostart
+  # Enable backlight level persisting
+  mkdir /etc/sv/backlight
+  wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/finish -O /etc/sv/backlight/finish
+  wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/run -O /etc/sv/backlight/run
+  ln -s /etc/sv/backlight /var/service
 fi
+# Install the chosen DE
 case $desktop_environment in
   "GNOME")
     xbps-install -S gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty flatpak
     ln -s /etc/sv/gdm /var/service
     ;;
   "KDE")
-    xbps-install -S sddm plasma-desktop xorg-minimal xdg-user-dirs pcmanfm-qt alacritty flatpak
+    xbps-install -S sddm plasma-desktop xorg-minimal xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt ark alacritty flatpak
     ln -s /etc/sv/sddm /var/service
     ;;
   *)
