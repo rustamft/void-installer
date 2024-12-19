@@ -59,6 +59,9 @@ case $desktop_environment in
   *)
     ;;
 esac
+# Configure ZRAM
+xbps-install -Sy zramen
+echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 # Configure GRUB
 xbps-install -Sy cryptsetup
 uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
@@ -67,9 +70,6 @@ sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& \${appendix}/" /etc/default/gru
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --boot-directory=/boot
 grub-mkconfig -o /boot/grub/grub.cfg
 xbps-reconfigure -fa
-# Configure ZRAM
-xbps-install -Sy zramen
-echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 exit
 EOF
 umount -R /mnt
