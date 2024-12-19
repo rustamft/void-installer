@@ -34,7 +34,7 @@ xbps-reconfigure -fa
 echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 # Enable services if any DE is chosen
 if [ $desktop_environment != "none" ]; then
-  xbps-install -S dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
+  xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
   # Enable general services
   rm /var/services/dhcpd
   ln -s /etc/sv/dbus /var/service
@@ -55,11 +55,11 @@ fi
 # Install the chosen DE
 case $desktop_environment in
   "GNOME")
-    xbps-install -S gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty flatpak
+    xbps-install -Sy gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty flatpak
     ln -s /etc/sv/gdm /var/service
     ;;
   "KDE")
-    xbps-install -S sddm plasma-desktop xorg-minimal xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt ark alacritty flatpak
+    xbps-install -Sy sddm plasma-desktop xorg-minimal xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt ark alacritty flatpak
     ln -s /etc/sv/sddm /var/service
     ;;
   *)
