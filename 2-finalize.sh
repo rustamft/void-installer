@@ -4,6 +4,9 @@ echo "$(lsblk)"
 while [ -z $disk ] || [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name (e.g. sda): " disk
 done
+mount /dev/mapper/cryptroot /mnt
+mount /dev/${disk}2 /mnt/boot
+mount /dev/${disk}1 /mnt/boot/efi
 while [ -z $desktop_environment ]; do
   printf "Choose desktop environment to install:\n  1) none\n  2) GNOME\n  3) KDE\n"
   read desktop_environment
@@ -18,15 +21,12 @@ while [ -z $desktop_environment ]; do
       desktop_environment="" ;;
   esac
 done
-mount /dev/mapper/cryptroot /mnt
-mount /dev/${disk}2 /mnt/boot
-mount /dev/${disk}1 /mnt/boot/efi
+while [ $desktop_environment != "none" ] && ( [ -z $username ] || [ -z grep -q "^$username:" /mnt/etc/passwd ] ); do
+  read -p "Enter your user name: " username
+done
 xchroot /mnt /bin/bash << EOF
 case $desktop_environment in
   "GNOME"|"KDE")
-    while [ -z \$username ] || [ ! id \$username >/dev/null 2>&1 ]; do
-      read -p "Enter your user name: " username
-    done
     xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
     rm /etc/runit/runsvdir/default/dhcpd
     ln -s /etc/sv/dbus /etc/runit/runsvdir/default/
@@ -35,8 +35,8 @@ case $desktop_environment in
     ln -s /etc/sv/tlp /etc/runit/runsvdir/default/
     mkdir -p /etc/pipewire/pipewire.conf.d
     ln -s /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pipewire.conf.d/
-    mkdir -p /home/\${username}/.config/autostart
-    ln -s /user/share/applications/pipewire.desktop /home/\${username}/.config/autostart
+    mkdir -p /home/${username}/.config/autostart
+    ln -s /user/share/applications/pipewire.desktop /home/${username}/.config/autostart
     mkdir /etc/sv/backlight
     wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/finish -O /etc/sv/backlight/finish
     wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/run -O /etc/sv/backlight/run
