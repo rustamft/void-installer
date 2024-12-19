@@ -25,6 +25,7 @@ while [ $desktop_environment != "none" ] && ( [ -z $username ] || [ -z $(grep "^
   read -p "Enter your user name: " username
 done
 xchroot /mnt /bin/bash << EOF
+xbps-install -yRs void-repo-nonfree
 xbps-install -Sy cryptsetup
 uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
 appendix="rd.auto=1 rd.luks.name=\${uuid}=cryptroot rd.luks.allow-discards"
