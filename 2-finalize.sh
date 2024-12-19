@@ -26,7 +26,7 @@ xchroot /mnt /bin/bash << EOF
 case $desktop_environment in
   "GNOME"|"KDE)
     while [ -z \$username ] || ! id \$username >/dev/null 2>&1; do
-      read -p "Enter your user name: " username
+      read -p 'Enter your user name: ' username
     done
     xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
     # Enable general services
