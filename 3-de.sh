@@ -8,7 +8,7 @@ while [ $desktop_environment != "none" ] && ( [ -z $username ] || [ -z $(grep "^
   read -p "Enter your user name: " username
 done
 while [ -z $desktop_environment ]; do
-  printf "Choose desktop environment to install:\n  1) none\n  2) GNOME\n  3) KDE\n"
+  printf "Choose desktop environment to install:\n  1) GNOME\n  2) KDE\n"
   read desktop_environment
   case $desktop_environment in
     "1")
