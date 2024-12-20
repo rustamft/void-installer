@@ -44,6 +44,8 @@ case $desktop_environment in
     ln -s /etc/sv/sddm /etc/runit/runsvdir/default/
     ;;
   *)
-    exit 1
+    printf '\nInstallation failed'
+    exit
     ;;
 esac
+reboot now
