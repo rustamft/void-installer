@@ -10,7 +10,7 @@ while [ -z $is_de_script_required ]; do
   case $input in
     ""|"Y"|"y")
       is_de_script_required=true
-      while [ -z $username ] || [ ! -e /mnt/home/$username ]; do
+      while [ -z $username ] || [ ! -d /mnt/home/$username ]; do
         read -p "Enter your user name: " username
       done
       ;;
