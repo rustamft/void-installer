@@ -47,8 +47,8 @@ case $desktop_environment in
     mkdir -p /home/${username}/.config/autostart
     ln -s /user/share/applications/pipewire.desktop /home/${username}/.config/autostart
     mkdir /etc/sv/backlight
-    wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/finish -O /etc/sv/backlight/finish
-    wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/run -O /etc/sv/backlight/run
+    wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/finish -O /etc/sv/backlight/finish
+    wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/run -O /etc/sv/backlight/run
     ln -s /etc/sv/backlight /etc/runit/runsvdir/default/
     flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     ;;
