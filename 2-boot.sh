@@ -4,6 +4,9 @@ echo "$(lsblk)"
 while [ -z $disk ] || [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name (e.g. sda): " disk
 done
+mount /dev/mapper/cryptroot /mnt
+mount /dev/${disk}2 /mnt/boot
+mount /dev/${disk}1 /mnt/boot/efi
 while [ -z $is_de_script_required ]; do
   printf "Would you like to download a desktop environment installation script to your user directory? [Y/n]\n"
   read input
@@ -20,9 +23,6 @@ while [ -z $is_de_script_required ]; do
       printf "This is not an option\n" ;;
   esac
 done
-mount /dev/mapper/cryptroot /mnt
-mount /dev/${disk}2 /mnt/boot
-mount /dev/${disk}1 /mnt/boot/efi
 xchroot /mnt /bin/bash << EOF
   xbps-install -yRs void-repo-nonfree
   xbps-install -Sy cryptsetup zramen
