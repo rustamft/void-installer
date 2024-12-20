@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ $EUID -ne 0 ]; then
   echo 'Root priveleges required to run the script'
   exit
