@@ -36,7 +36,7 @@ xbps-install -Sy zramen
 echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
 case $desktop_environment in
   "GNOME"|"KDE")
-    xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
+    xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget flatpak
     rm /etc/runit/runsvdir/default/dhcpcd
     ln -s /etc/sv/dbus /etc/runit/runsvdir/default/
     ln -s /etc/sv/NetworkManager /etc/runit/runsvdir/default/
@@ -50,17 +50,18 @@ case $desktop_environment in
     wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/finish -O /etc/sv/backlight/finish
     wget https://raw.githubusercontent.com/madand/runit-services/refs/heads/master/backlight/run -O /etc/sv/backlight/run
     ln -s /etc/sv/backlight /etc/runit/runsvdir/default/
+    flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     ;;
   *)
     ;;
 esac
 case $desktop_environment in
   "GNOME")
-    xbps-install -Sy gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty flatpak
+    xbps-install -Sy gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty
     ln -s /etc/sv/gdm /etc/runit/runsvdir/default/
     ;;
   "KDE")
-    xbps-install -Sy sddm plasma-desktop xorg-minimal xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt ark alacritty flatpak
+    xbps-install -Sy sddm plasma-desktop xorg-minimal xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt ark alacritty
     ln -s /etc/sv/sddm /etc/runit/runsvdir/default/
     ;;
   *)
