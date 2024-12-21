@@ -4,9 +4,6 @@ if [ $EUID -ne 0 ]; then
   echo 'Root priveleges required to run the script'
   exit
 fi
-while [ $desktop_environment != "none" ] && ( [ -z $username ] || [ -z $(grep "^${username}:" /mnt/etc/passwd) ] ); do
-  read -p "Enter your user name: " username
-done
 while [ -z $desktop_environment ]; do
   printf "Choose desktop environment to install:\n  1) GNOME\n  2) KDE\n"
   read desktop_environment
@@ -27,8 +24,8 @@ ln -sf /etc/sv/bluetoothd /var/service
 ln -sf /etc/sv/tlp /var/service
 mkdir -p /etc/pipewire/pipewire.conf.d
 ln -sf /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pipewire.conf.d/
-mkdir -p /home/${username}/.config/autostart
-ln -sf /user/share/applications/pipewire.desktop /home/${username}/.config/autostart
+mkdir -p ~/.config/autostart
+ln -sf /user/share/applications/pipewire.desktop ~/.config/autostart
 mkdir /etc/sv/backlight
 wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/finish -O /etc/sv/backlight/finish
 wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/run -O /etc/sv/backlight/run
