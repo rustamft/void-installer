@@ -1,8 +1,15 @@
 #!/bin/bash
 
+echo "##################################################"
+echo "###                                            ###"
+echo "###   Wellcome to the Disk Partition script!   ###"
+echo "###                                            ###"
+echo "##################################################"
+echo "Your current block devices:"
 echo "$(lsblk)"
 while [ -z $disk ] || [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name (e.g. sda): " disk
+  printf "\n"
 done
 while [ -z $password ] || [ $password != $password_confirmation ]; do
   read -s -p "Enter a password for the ${disk}3 partition encryption: " password
