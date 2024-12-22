@@ -33,9 +33,8 @@ ln -sf /etc/sv/tlp /var/service
 mkdir -p /etc/pipewire/pipewire.conf.d
 ln -sf /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pipewire.conf.d
 ln -sf /usr/share/examples/wireplumber/20-pipewire-pulse.conf /etc/pipewire/pipewire.conf.d
-mkdir -p ~/.config/autostart
-ln -sf /user/share/applications/pipewire.desktop ~/.config/autostart
-ln -sf /user/share/applications/pipewire-pulse.desktop ~/.config/autostart
+cp /usr/share/applications/pipewire.desktop /etc/xdg/autostart
+cp /usr/share/applications/pipewire-pulse.desktop /etc/xdg/autostart
 mkdir /etc/sv/backlight
 wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/finish -O /etc/sv/backlight/finish
 wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/run -O /etc/sv/backlight/run
