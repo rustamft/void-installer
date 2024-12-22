@@ -8,7 +8,7 @@ mount /dev/mapper/cryptroot /mnt
 mount /dev/${disk}2 /mnt/boot
 mount /dev/${disk}1 /mnt/boot/efi
 while [ -z $is_de_script_required ]; do
-  printf "Would you like to download a desktop environment installation script to your user directory? [Y/n]\n"
+  echo "Would you like to download a desktop environment installation script to your user directory? [Y/n]"
   read input
   case $input in
     ""|"Y"|"y")
@@ -39,4 +39,8 @@ if $is_de_script_required; then
 fi
 umount -R /mnt
 cryptsetup luksClose /dev/mapper/cryptroot
-echo "Void Linux is ready to boot!"
+echo "##########################################"
+echo "###                                    ###"
+echo "###    Void Linux is ready to boot!    ###"
+echo "###                                    ###"
+echo "##########################################"
