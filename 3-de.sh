@@ -45,3 +45,8 @@ case $desktop_environment in
     exit
     ;;
 esac
+if [ -d /var/service/gdm ] || [ -d /var/service/sddm ]; then
+  reboot now
+else
+  printf "\n${desktop_environment} installation isn't complete, please check installed packages"
+fi
