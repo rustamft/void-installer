@@ -31,7 +31,8 @@ ln -sf /etc/sv/NetworkManager /var/service
 ln -sf /etc/sv/bluetoothd /var/service
 ln -sf /etc/sv/tlp /var/service
 mkdir -p /etc/pipewire/pipewire.conf.d
-ln -sf /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pipewire.conf.d/
+ln -sf /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pipewire.conf.d
+ln -sf /usr/share/examples/wireplumber/20-pipewire-pulse.conf /etc/pipewire/pipewire.conf.d
 mkdir -p ~/.config/autostart
 ln -sf /user/share/applications/pipewire.desktop ~/.config/autostart
 ln -sf /user/share/applications/pipewire-pulse.desktop ~/.config/autostart
