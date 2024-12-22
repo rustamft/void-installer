@@ -24,7 +24,7 @@ while [ -z $desktop_environment ]; do
       desktop_environment="" ;;
   esac
 done
-xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget unrar flatpak
+xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget flatpak
 ln -sf /etc/sv/dbus /var/service
 rm /var/service/dhcpcd
 ln -sf /etc/sv/NetworkManager /var/service
@@ -46,7 +46,7 @@ case $desktop_environment in
     ln -sf /etc/sv/gdm /var/service
     ;;
   "KDE")
-    xbps-install -Sy xorg-minimal sddm sddm-kcm plasma-desktop kwallet-pam plasma-pa kpipewire xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark alacritty
+    xbps-install -Sy xorg-minimal sddm sddm-kcm plasma-desktop kwallet-pam plasma-pa kpipewire xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark unrar alacritty
     ln -sf /etc/sv/sddm /var/service
     ;;
   *)
