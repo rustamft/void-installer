@@ -1,5 +1,11 @@
 #!/bin/bash
 
+echo "##############################################"
+echo "###                                        ###"
+echo "###   Wellcome to the Boot Setup script!   ###"
+echo "###                                        ###"
+echo "##############################################"
+echo "Your current block devices:"
 echo "$(lsblk)"
 while [ -z $disk ] || [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name (e.g. sda): " disk
