@@ -24,7 +24,7 @@ while [ -z $desktop_environment ]; do
       desktop_environment="" ;;
   esac
 done
-xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget flatpak
+xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget unrar flatpak
 ln -sf /etc/sv/dbus /var/service
 rm /var/service/dhcpcd
 ln -sf /etc/sv/NetworkManager /var/service
