@@ -54,8 +54,8 @@ case $desktop_environment in
     ;;
 esac
 if [ -d /var/service/gdm ] || [ -d /var/service/sddm ]; then
-  printf "\n${desktop_environment} installation is complete! Restarting..."
+  printf "\n${desktop_environment} installation is complete! Restarting...\n"
   reboot now
 else
-  printf "\n${desktop_environment} installation isn't complete, please check installed packages"
+  printf "\n${desktop_environment} installation isn't complete, please check installed packages\n"
 fi
