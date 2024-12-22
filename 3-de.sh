@@ -46,7 +46,7 @@ case $desktop_environment in
     ln -sf /etc/sv/gdm /var/service
     ;;
   "KDE")
-    xbps-install -Sy xorg-minimal sddm sddm-kcm plasma-desktop kwallet-pam xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark alacritty
+    xbps-install -Sy xorg-minimal sddm sddm-kcm plasma-desktop kwallet-pam plasma-pa kpipewire xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark alacritty
     ln -sf /etc/sv/sddm /var/service
     ;;
   *)
