@@ -4,6 +4,14 @@ if [ $EUID -ne 0 ]; then
   echo 'Root priveleges required to run the script'
   exit
 fi
+echo "####################################################################"
+echo "###                                                              ###"
+echo "###   Wellcome to the Desktop Environment installation script!   ###"
+echo "###                                                              ###"
+echo "###            Note, the computer will be restarted,             ###"
+echo "###             when the installation is complete!               ###"
+echo "###                                                              ###"
+echo "####################################################################"
 while [ -z $desktop_environment ]; do
   printf "Choose desktop environment to install:\n  1) GNOME\n  2) KDE\n"
   read desktop_environment
