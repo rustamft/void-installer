@@ -6,7 +6,7 @@ echo "###   Wellcome to the Disk Partition script!   ###"
 echo "###                                            ###"
 echo "##################################################"
 echo "Your current block devices:"
-echo "$(lsblk)"
+lsblk
 while [ -z $disk ] || [ ! -e /dev/$disk ]; do
   read -p "Enter a valid disk name (e.g. sda): " disk
   printf "\n"
@@ -37,4 +37,4 @@ EOF
 echo -n $password | cryptsetup luksFormat /dev/${disk}3 -
 echo -n $password | cryptsetup luksOpen /dev/${disk}3 cryptroot -
 printf "\nDisk has been partitioned:\n"
-echo "$(lsblk)"
+lsblk
