@@ -14,8 +14,8 @@ mount /dev/mapper/cryptroot /mnt
 mount /dev/${disk}2 /mnt/boot
 mount /dev/${disk}1 /mnt/boot/efi
 while [ -z $is_de_script_required ]; do
-  read -p "Would you like to download a desktop environment installation script to your user directory? [Y/n] " input
-  case $input in
+  read -p "Would you like to download a desktop environment installation script to your user directory? [Y/n] " is_de_script_required
+  case $is_de_script_required in
     ""|"Y"|"y")
       is_de_script_required=true
       while [ -z $username ] || [ ! -d /mnt/home/$username ]; do
@@ -29,7 +29,6 @@ while [ -z $is_de_script_required ]; do
       is_de_script_required=""
       ;;
   esac
-  unsest input
 done
 xchroot /mnt /bin/bash << EOF
   xbps-install -yRs void-repo-nonfree
