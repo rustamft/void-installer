@@ -38,24 +38,24 @@ while [[ -z $is_flatpak_required ]]; do
   esac
 done
 packages="dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget"
+if $is_flatpak_required; then
+  packages="$packages flatpak"
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+fi
 case $desktop_environment in
   "GNOME")
-    packages="$packages gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty"
-    ln -sf /etc/sv/gdm /var/service
-    ;;
+    packages="$packages gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty" ;;
   "KDE")
     packages="$packages xorg-minimal sddm sddm-kcm ntp plasma-desktop kwallet-pam plasma-pa kpipewire kscreen xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark unrar alacritty"
-    ln -sf /etc/sv/sddm /var/service
+    if $is_flatpak_required; then
+      packages="$packages flatpak-kcm"
+    fi
     ;;
   *)
     printf '\nInstallation failed'
     exit
     ;;
 esac
-if $is_flatpak_required; then
-  packages="$packages flatpak"
-  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-fi
 xbps-install -Sy $packages
 ln -sf /etc/sv/dbus /var/service
 rm /var/service/dhcpcd
