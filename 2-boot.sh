@@ -7,18 +7,25 @@ echo "###                                        ###"
 echo "##############################################"
 echo "Your current block devices:"
 echo "$(lsblk)"
-while [ -z $disk ] || [ ! -e /dev/$disk ]; do
+while [[ -z $disk ]] || [[ ! -e /dev/$disk ]]; do
   read -p "Enter a valid disk name (e.g. sda): " disk
 done
+if [[ $disk == *"nvme"* ]]; then
+  disk_partition_1="${disk}p1"
+  disk_partition_2="${disk}p2"
+else
+  disk_partition_1="${disk}1"
+  disk_partition_2="${disk}2"
+fi
 mount /dev/mapper/cryptroot /mnt
-mount /dev/${disk}2 /mnt/boot
-mount /dev/${disk}1 /mnt/boot/efi
-while [ -z $is_de_script_required ]; do
+mount /dev/$disk_partition_2 /mnt/boot
+mount /dev/$disk_partition_1 /mnt/boot/efi
+while [[ -z $is_de_script_required ]]; do
   read -p "Would you like to download a desktop environment installation script to your user directory? [Y/n] " is_de_script_required
   case $is_de_script_required in
     ""|"Y"|"y")
       is_de_script_required=true
-      while [ -z $username ] || [ ! -d /mnt/home/$username ]; do
+      while [[ -z $username ]] || [[ ! -d /mnt/home/$username ]]; do
         read -p "Enter your user name: " username
       done
       ;;
