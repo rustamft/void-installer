@@ -37,7 +37,26 @@ while [[ -z $is_flatpak_required ]]; do
       ;;
   esac
 done
-xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
+packages="dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget"
+case $desktop_environment in
+  "GNOME")
+    packages="$packages gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty"
+    ln -sf /etc/sv/gdm /var/service
+    ;;
+  "KDE")
+    packages="$packages xorg-minimal sddm sddm-kcm ntp plasma-desktop kwallet-pam plasma-pa kpipewire kscreen xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark unrar alacritty"
+    ln -sf /etc/sv/sddm /var/service
+    ;;
+  *)
+    printf '\nInstallation failed'
+    exit
+    ;;
+esac
+if $is_flatpak_required; then
+  packages="$packages flatpak"
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+fi
+xbps-install -Sy $packages
 ln -sf /etc/sv/dbus /var/service
 rm /var/service/dhcpcd
 ln -sf /etc/sv/NetworkManager /var/service
@@ -54,24 +73,17 @@ mkdir /etc/sv/backlight
 wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/finish -O /etc/sv/backlight/finish
 wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/run -O /etc/sv/backlight/run
 ln -sf /etc/sv/backlight /var/service
-case $desktop_environment in
-  "GNOME")
-    xbps-install -Sy gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty
-    ln -sf /etc/sv/gdm /var/service
-    ;;
-  "KDE")
-    xbps-install -Sy xorg-minimal sddm sddm-kcm ntp plasma-desktop kwallet-pam plasma-pa kpipewire kscreen xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark unrar alacritty
-    ln -sf /etc/sv/sddm /var/service
-    ;;
-  *)
-    printf '\nInstallation failed'
-    exit
-    ;;
-esac
 if $is_flatpak_required; then
-  xbps-install -Sy flatpak
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 fi
+case $desktop_environment in
+  "GNOME")
+    ln -sf /etc/sv/gdm /var/service ;;
+  "KDE")
+    ln -sf /etc/sv/sddm /var/service ;;
+  *)
+    ;;
+esac
 if [[ -d /var/service/gdm ]] || [[ -d /var/service/sddm ]]; then
   printf "\n${desktop_environment} installation is complete! Restarting...\n"
   reboot now
