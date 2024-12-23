@@ -32,7 +32,7 @@ while [ -z $is_flatpak_required ]; do
     "N"|"n")
       is_flatpak_required=false ;;
     *)
-      echo "This is not an option"
+      printf "This is not an option\n"
       is_flatpak_required=""
       ;;
 done
