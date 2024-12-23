@@ -14,8 +14,7 @@ mount /dev/mapper/cryptroot /mnt
 mount /dev/${disk}2 /mnt/boot
 mount /dev/${disk}1 /mnt/boot/efi
 while [ -z $is_de_script_required ]; do
-  echo "Would you like to download a desktop environment installation script to your user directory? [Y/n] "
-  read input
+  read -p "Would you like to download a desktop environment installation script to your user directory? [Y/n] " input
   case $input in
     ""|"Y"|"y")
       is_de_script_required=true
