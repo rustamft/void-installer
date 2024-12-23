@@ -14,7 +14,7 @@ mount /dev/mapper/cryptroot /mnt
 mount /dev/${disk}2 /mnt/boot
 mount /dev/${disk}1 /mnt/boot/efi
 while [ -z $is_de_script_required ]; do
-  echo "Would you like to download a desktop environment installation script to your user directory? [Y/n]"
+  echo "Would you like to download a desktop environment installation script to your user directory? [Y/n] "
   read input
   case $input in
     ""|"Y"|"y")
@@ -26,7 +26,9 @@ while [ -z $is_de_script_required ]; do
     "N"|"n")
       is_de_script_required=false ;;
     *)
-      printf "This is not an option\n" ;;
+      printf "This is not an option\n"
+      is_de_script_required=""
+      ;;
   esac
 done
 xchroot /mnt /bin/bash << EOF
