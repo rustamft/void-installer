@@ -24,7 +24,19 @@ while [ -z $desktop_environment ]; do
       desktop_environment="" ;;
   esac
 done
-xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget flatpak
+while [ -z $is_flatpak_required ]; do
+  read -p "Is Flatpak installation required? [Y/n] " is_flatpak_required
+  case $is_flatpak_required in
+    ""|"Y"|"y")
+      is_flatpak_required=true ;;
+    "N"|"n")
+      is_flatpak_required=false ;;
+    *)
+      echo "This is not an option"
+      is_flatpak_required=""
+      ;;
+done
+xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
 ln -sf /etc/sv/dbus /var/service
 rm /var/service/dhcpcd
 ln -sf /etc/sv/NetworkManager /var/service
@@ -41,7 +53,6 @@ mkdir /etc/sv/backlight
 wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/finish -O /etc/sv/backlight/finish
 wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/run -O /etc/sv/backlight/run
 ln -sf /etc/sv/backlight /var/service
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 case $desktop_environment in
   "GNOME")
     xbps-install -Sy gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty
@@ -56,6 +67,10 @@ case $desktop_environment in
     exit
     ;;
 esac
+if $is_flatpak_required; then
+  xbps-install -Sy flatpak
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+fi
 if [ -d /var/service/gdm ] || [ -d /var/service/sddm ]; then
   printf "\n${desktop_environment} installation is complete! Restarting...\n"
   reboot now
