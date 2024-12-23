@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $EUID -ne 0 ]; then
+if [[ $EUID -ne 0 ]]; then
   echo 'Root priveleges required to run the script'
   exit
 fi
@@ -12,7 +12,7 @@ echo "###            Note, the computer will be restarted,             ###"
 echo "###             when the installation is complete!               ###"
 echo "###                                                              ###"
 echo "####################################################################"
-while [ -z $desktop_environment ]; do
+while [[ -z $desktop_environment ]]; do
   printf "Choose desktop environment to install:\n  1) GNOME\n  2) KDE\n"
   read desktop_environment
   case $desktop_environment in
@@ -24,7 +24,7 @@ while [ -z $desktop_environment ]; do
       unset desktop_environment ;;
   esac
 done
-while [ -z $is_flatpak_required ]; do
+while [[ -z $is_flatpak_required ]]; do
   read -p "Is Flatpak installation required? [Y/n] " is_flatpak_required
   case $is_flatpak_required in
     ""|"Y"|"y")
@@ -72,7 +72,7 @@ if $is_flatpak_required; then
   xbps-install -Sy flatpak
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 fi
-if [ -d /var/service/gdm ] || [ -d /var/service/sddm ]; then
+if [[ -d /var/service/gdm ]] || [[ -d /var/service/sddm ]]; then
   printf "\n${desktop_environment} installation is complete! Restarting...\n"
   reboot now
 else
