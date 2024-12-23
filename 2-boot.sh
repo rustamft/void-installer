@@ -29,6 +29,7 @@ while [ -z $is_de_script_required ]; do
       is_de_script_required=""
       ;;
   esac
+  unsest input
 done
 xchroot /mnt /bin/bash << EOF
   xbps-install -yRs void-repo-nonfree
