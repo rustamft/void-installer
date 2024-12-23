@@ -35,6 +35,7 @@ while [ -z $is_flatpak_required ]; do
       printf "This is not an option\n"
       is_flatpak_required=""
       ;;
+  esac
 done
 xbps-install -Sy dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget
 ln -sf /etc/sv/dbus /var/service
