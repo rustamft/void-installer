@@ -21,7 +21,7 @@ while [ -z $desktop_environment ]; do
     "2")
       desktop_environment="KDE" ;;
     *)
-      desktop_environment="" ;;
+      unset desktop_environment ;;
   esac
 done
 while [ -z $is_flatpak_required ]; do
