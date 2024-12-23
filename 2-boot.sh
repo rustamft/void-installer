@@ -26,7 +26,7 @@ while [ -z $is_de_script_required ]; do
       is_de_script_required=false ;;
     *)
       printf "This is not an option\n"
-      is_de_script_required=""
+      unset is_de_script_required
       ;;
   esac
 done
