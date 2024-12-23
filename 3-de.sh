@@ -33,7 +33,7 @@ while [ -z $is_flatpak_required ]; do
       is_flatpak_required=false ;;
     *)
       printf "This is not an option\n"
-      is_flatpak_required=""
+      unset is_flatpak_required
       ;;
   esac
 done
