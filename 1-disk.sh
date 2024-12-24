@@ -44,8 +44,13 @@ EOF
 echo -n $password | cryptsetup luksFormat /dev/$disk_partition_3 -
 echo -n $password | cryptsetup luksOpen /dev/$disk_partition_3 cryptroot -
 if [[ -e /dev/$disk_partition_3 ]] && [[ -e /dev/mapper/cryptroot ]]; then
-  printf "\nDisk has been partitioned:\n"
   lsblk -I 8,253,254,259
+  echo "##########################################"
+  echo "###                                    ###"
+  echo "###     Disk has been partitioned!     ###"
+  echo "###   You may run void-installer now   ###"
+  echo "###                                    ###"
+  echo "##########################################"
 else
   printf "\nSomething went wrong, disk has not been partitioned\n"
 fi
