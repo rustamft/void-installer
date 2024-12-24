@@ -8,14 +8,23 @@ echo "##############################################"
 echo "Your current block devices:"
 echo "$(lsblk)"
 while [[ -z $disk ]] || [[ ! -e /dev/$disk ]]; do
-  read -p "Enter a valid disk name (e.g. sda): " disk
+  read -p "Enter previously partitioned disk name (e.g. sda or nvme0n1): " disk
 done
 if [[ $disk == *"nvme"* ]]; then
   disk_partition_1="${disk}p1"
   disk_partition_2="${disk}p2"
+  disk_partition_3="${disk}p3"
 else
   disk_partition_1="${disk}1"
   disk_partition_2="${disk}2"
+  disk_partition_3="${disk}3"
+fi
+if [[ ! -e /dev/$disk_partition_1 ]] || [[ ! -e /dev/$disk_partition_2 ]] || [[ ! -e /dev/$disk_partition_3 ]]; then
+  echo "${disk} is not partitioned correctly"
+  exit
+fi
+if [[ ! -e /dev/mapper/cryptroot ]]; then
+  cryptsetup luksOpen /dev/$disk_partition_3 cryptroot
 fi
 mount /dev/mapper/cryptroot /mnt
 mount /dev/$disk_partition_2 /mnt/boot
