@@ -9,7 +9,7 @@ echo "###   The script will destroy all data on a disk you choose   ###"
 echo "###                                                           ###"
 echo "#################################################################"
 echo "Your current disks and partitions:"
-lsblk -I 8,259
+lsblk -I 8,253,254,259
 while [[ -z $disk ]] || [[ ! -e /dev/$disk ]]; do
   read -p "Enter a valid disk name (e.g. sda or nvme0n1): " disk
   printf "\n"
