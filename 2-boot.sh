@@ -6,7 +6,7 @@ echo "###   Wellcome to the Boot Setup script!   ###"
 echo "###                                        ###"
 echo "##############################################"
 echo "Your current block devices:"
-echo "$(lsblk)"
+lsblk -I 8,253,254,259
 while [[ -z $disk ]] || [[ ! -e /dev/$disk ]]; do
   read -p "Enter previously partitioned disk name (e.g. sda or nvme0n1): " disk
 done
