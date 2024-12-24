@@ -8,8 +8,8 @@ echo "###                         WARNING!                          ###"
 echo "###   The script will destroy all data on a disk you choose   ###"
 echo "###                                                           ###"
 echo "#################################################################"
-echo "Your current block devices:"
-lsblk
+echo "Your current disks and partitions:"
+lsblk -I 8,259
 while [[ -z $disk ]] || [[ ! -e /dev/$disk ]]; do
   read -p "Enter a valid disk name (e.g. sda or nvme0n1): " disk
   printf "\n"
@@ -44,5 +44,9 @@ q
 EOF
 echo -n $password | cryptsetup luksFormat /dev/$disk_partition_3 -
 echo -n $password | cryptsetup luksOpen /dev/$disk_partition_3 cryptroot -
-printf "\nDisk has been partitioned:\n"
-lsblk
+if [[ -e /dev/$disk_partition_3 ]] && [[ -e /dev/mapper/cryptroot ]]; then
+  printf "\nDisk has been partitioned:\n"
+  lsblk -I 8,259
+else
+  printf "\nSomething went wrong, disk has not been partitioned\n"
+fi
