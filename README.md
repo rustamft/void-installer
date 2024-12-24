@@ -16,8 +16,8 @@ Commands order:
 8) chmod +x /tmp/2.sh
 9) /tmp/2.sh
 10) reboot now
-*11) chmod +x ~/3-de.sh
-*12) ~/3-de.sh
+11) chmod +x ~/3-de.sh # If you wish to install DE
+12) ~/3-de.sh # If you wish to install DE
 
 Inside Void installer do as you wish except the following:
 1) select "none" in the BootLoader section
