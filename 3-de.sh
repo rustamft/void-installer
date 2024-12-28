@@ -37,7 +37,7 @@ while [[ -z $is_flatpak_required ]]; do
       ;;
   esac
 done
-packages="dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget"
+packages="dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget noto-fonts-cjk"
 if $is_flatpak_required; then
   packages="$packages flatpak"
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
