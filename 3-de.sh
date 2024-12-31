@@ -13,12 +13,14 @@ echo "###             when the installation is complete!               ###"
 echo "###                                                              ###"
 echo "####################################################################"
 while [[ -z $desktop_environment ]]; do
-  printf "Choose desktop environment to install:\n  1) GNOME\n  2) KDE\n"
+  printf "Choose installation type:\n  1) Only basic services for a desktop environment\n  2) Minimal GNOME\n  3) Minimal KDE\n"
   read desktop_environment
   case $desktop_environment in
     "1")
-      desktop_environment="GNOME" ;;
+      desktop_environment="Basic" ;;
     "2")
+      desktop_environment="GNOME" ;;
+    "3")
       desktop_environment="KDE" ;;
     *)
       unset desktop_environment ;;
@@ -43,6 +45,8 @@ if $is_flatpak_required; then
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 fi
 case $desktop_environment in
+  "Basic")
+    ;;
   "GNOME")
     packages="$packages gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty" ;;
   "KDE")
@@ -77,11 +81,15 @@ if $is_flatpak_required; then
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 fi
 case $desktop_environment in
+  "Basic")
+    ;;
   "GNOME")
     ln -sf /etc/sv/gdm /var/service ;;
   "KDE")
     ln -sf /etc/sv/sddm /var/service ;;
   *)
+    printf '\nInstallation failed'
+    exit
     ;;
 esac
 if [[ -d /var/service/gdm ]] || [[ -d /var/service/sddm ]]; then
