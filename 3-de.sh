@@ -92,7 +92,7 @@ case $desktop_environment in
     exit
     ;;
 esac
-if [[ -d /var/service/gdm ]] || [[ -d /var/service/sddm ]]; then
+if [[ $desktop_environment == "Basic" ]] || [[ -d /var/service/gdm ]] || [[ -d /var/service/sddm ]]; then
   printf "\n${desktop_environment} installation is complete! Restarting...\n"
   reboot now
 else
