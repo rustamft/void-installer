@@ -50,7 +50,7 @@ case $desktop_environment in
   "GNOME")
     packages="$packages gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty" ;;
   "KDE")
-    packages="$packages xorg-minimal sddm sddm-kcm ntp plasma-desktop kwallet-pam plasma-nm plasma-pa kpipewire kscreen kinfocenter xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark unrar alacritty"
+    packages="$packages xorg-minimal sddm sddm-kcm ntp plasma-desktop kwallet-pam plasma-nm bluedevil plasma-pa kpipewire kscreen kinfocenter xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark unrar alacritty"
     if $is_flatpak_required; then
       packages="$packages flatpak-kcm"
     fi
