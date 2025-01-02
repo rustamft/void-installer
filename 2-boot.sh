@@ -29,6 +29,19 @@ fi
 mount /dev/mapper/cryptroot /mnt
 mount /dev/$disk_partition_2 /mnt/boot
 mount /dev/$disk_partition_1 /mnt/boot/efi
+while [[ -z $is_swap_required ]]; do
+  read -p "Would you like zRAM and SWAP to be configured? [Y/n] " is_swap_required
+  case $is_swap_required in
+    ""|"Y"|"y")
+      is_swap_required=true ;;
+    "N"|"n")
+      is_swap_required=false ;;
+    *)
+      printf "This is not an option\n"
+      unset is_swap_required
+      ;;
+  esac
+done
 while [[ -z $is_de_script_required ]]; do
   read -p "Would you like to download a desktop environment installation script to your user directory? [Y/n] " is_de_script_required
   case $is_de_script_required in
@@ -48,13 +61,23 @@ while [[ -z $is_de_script_required ]]; do
 done
 xchroot /mnt /bin/bash << EOF
   xbps-install -yRs void-repo-nonfree
-  xbps-install -Sy cryptsetup zramen
+  packages="cryptsetup"
+  if $is_swap_required; then
+    packages="\${packages} zramen"
+  fi
+  xbps-install -Sy \$packages
   uuid=$(blkid -o value -s UUID /dev/mapper/cryptroot)
   appendix="rd.auto=1 rd.luks.name=\${uuid}=cryptroot rd.luks.allow-discards"
   sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& \${appendix}/" /etc/default/grub
   grub-install --target=x86_64-efi --efi-directory=/boot/efi --boot-directory=/boot
   xbps-reconfigure -fa
-  echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
+  if $is_swap_required; then
+    echo "zramen -a zstd -n 6 -s 50 -p 100 make" >> /etc/rc.local
+    fallocate -l 16G /swapfile
+    chmod 600 /swapfile
+    mkswap /swapfile
+    echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
+  fi
   exit
 EOF
 if $is_de_script_required; then
