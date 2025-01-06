@@ -39,7 +39,7 @@ while [[ -z $is_flatpak_required ]]; do
       ;;
   esac
 done
-packages="dbus NetworkManager bluez tlp pipewire elogind mesa-dri wget noto-fonts-cjk"
+packages="dbus NetworkManager bluez tlp pipewire elogind mesa-dri xdg-user-dirs xdg-utils wget noto-fonts-cjk"
 if $is_flatpak_required; then
   packages="$packages flatpak"
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
@@ -48,9 +48,9 @@ case $desktop_environment in
   "Basic")
     ;;
   "GNOME")
-    packages="$packages gdm gnome-core xdg-desktop-portal-gnome xdg-user-dirs nautilus file-roller alacritty" ;;
+    packages="$packages gdm gnome-core xdg-desktop-portal-gnome nautilus file-roller alacritty" ;;
   "KDE")
-    packages="$packages xorg-minimal sddm sddm-kcm ntp plasma-desktop kwallet-pam plasma-nm bluedevil plasma-pa kpipewire kscreen kinfocenter xdg-desktop-portal-kde xdg-user-dirs pcmanfm-qt gvfs ark unrar alacritty"
+    packages="$packages xorg-minimal sddm sddm-kcm ntp plasma-desktop kwallet-pam plasma-nm bluedevil plasma-pa kpipewire kscreen kinfocenter xdg-desktop-portal-kde pcmanfm-qt gvfs ark unrar alacritty"
     if $is_flatpak_required; then
       packages="$packages flatpak-kcm"
     fi
