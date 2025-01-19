@@ -50,7 +50,7 @@ case $desktop_environment in
   "GNOME")
     packages="$packages gdm gnome-core xdg-desktop-portal-gnome nautilus file-roller alacritty" ;;
   "KDE")
-    packages="$packages xorg-minimal sddm sddm-kcm ntp plasma-desktop kf6-kded kwallet-pam plasma-nm bluedevil plasma-pa kpipewire kscreen kinfocenter xdg-desktop-portal-kde pcmanfm-qt gvfs ark unrar alacritty" ;;
+    packages="$packages xorg-minimal sddm sddm-kcm ntp plasma-desktop kf6-kded kwallet-pam plasma-nm bluedevil plasma-pa kpipewire kscreen kinfocenter dmidecode xdg-desktop-portal-kde pcmanfm-qt gvfs ark unrar alacritty" ;;
   *)
     printf '\nInstallation failed'
     exit
