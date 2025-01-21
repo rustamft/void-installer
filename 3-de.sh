@@ -70,10 +70,6 @@ ln -sf /usr/share/applications/pipewire.desktop /etc/xdg/autostart
 chmod +x /usr/share/applications/pipewire.desktop
 ln -sf /usr/share/applications/pipewire-pulse.desktop /etc/xdg/autostart
 chmod +x /usr/share/applications/pipewire-pulse.desktop
-mkdir /etc/sv/backlight
-wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/finish -O /etc/sv/backlight/finish
-wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/run -O /etc/sv/backlight/run
-ln -sf /etc/sv/backlight /var/service
 if $is_flatpak_required; then
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 fi
@@ -81,7 +77,12 @@ case $desktop_environment in
   "Basic")
     ;;
   "GNOME")
-    ln -sf /etc/sv/gdm /var/service ;;
+    mkdir /etc/sv/backlight
+    wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/finish -O /etc/sv/backlight/finish
+    wget https://raw.githubusercontent.com/rustamft/void-installer/refs/heads/main/backlight/run -O /etc/sv/backlight/run
+    ln -sf /etc/sv/backlight /var/service
+    ln -sf /etc/sv/gdm /var/service
+    ;;
   "KDE")
     ln -sf /etc/sv/sddm /var/service ;;
   *)
